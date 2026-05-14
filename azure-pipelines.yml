@@ -5,18 +5,34 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo "Iniciando pipeline..."
+
+- script: echo "Iniciando pipeline"
   displayName: 'Start'
 
+# 🔥 INSTALAR DOCKER
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y docker.io
+  displayName: 'Instalar Docker'
+
+# 🔥 INSTALAR DOCKER COMPOSE
+- script: |
+    sudo apt-get install -y docker-compose
+  displayName: 'Instalar Docker Compose'
+
+# 🔥 TESTAR
 - script: |
     docker --version
     docker-compose --version
-  displayName: 'Check Docker'
+  displayName: 'Verificar Docker'
 
+# 🔥 RODAR PROJETO
 - script: |
-    docker-compose up -d --build
-  displayName: 'Build e Run API'
+    sudo docker-compose up -d --build
+  displayName: 'Subir API'
 
+# 🔥 TESTAR API
 - script: |
+    sleep 5
     curl http://localhost:5000
-  displayName: 'Test API'
+  displayName: 'Testar API'
