@@ -1,0 +1,22 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo "Iniciando pipeline..."
+  displayName: 'Start'
+
+- script: |
+    docker --version
+    docker-compose --version
+  displayName: 'Check Docker'
+
+- script: |
+    docker-compose up -d --build
+  displayName: 'Build e Run API'
+
+- script: |
+    curl http://localhost:5000
+  displayName: 'Test API'
