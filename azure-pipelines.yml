@@ -9,30 +9,23 @@ steps:
 - script: echo "Iniciando pipeline"
   displayName: 'Start'
 
-# 🔥 INSTALAR DOCKER
-- script: |
-    sudo apt-get update
-    sudo apt-get install -y docker.io
-  displayName: 'Instalar Docker'
+# 🔥 USAR DOCKER NATIVO DO AZURE
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: '20.10.7'
 
-# 🔥 INSTALAR DOCKER COMPOSE
+# 🔥 BUILD DA IMAGEM
 - script: |
-    sudo apt-get install -y docker-compose
-  displayName: 'Instalar Docker Compose'
+    docker build -t minha-api .
+  displayName: 'Build Docker'
 
-# 🔥 TESTAR
+# 🔥 RODAR CONTAINER
 - script: |
-    docker --version
-    docker-compose --version
-  displayName: 'Verificar Docker'
+    docker run -d -p 5000:5000 minha-api
+  displayName: 'Run Container'
 
-# 🔥 RODAR PROJETO
+# 🔥 TESTE
 - script: |
-    sudo docker-compose up -d --build
-  displayName: 'Subir API'
-
-# 🔥 TESTAR API
-- script: |
-    sleep 5
+    sleep 10
     curl http://localhost:5000
-  displayName: 'Testar API'
+  displayName: 'Test API'
