@@ -26,6 +26,6 @@ steps:
 
 # 🔥 TESTE
 - script: |
-    sleep 10
+    sleep 20
     curl http://localhost:5000
   displayName: 'Test API'
